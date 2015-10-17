@@ -109,16 +109,30 @@ $(document).ready(function() {
   });
 });
 
-$(document).on('click', '.portlet-create', function() {
+$(document).on('click', '.portlet-create', function(e) {
+  e.preventDefault();
   var column = $(this);
-  $(column[0].parentNode.parentNode).append(
-    "<div class='portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'>" +
-    "<div class='portlet-header ui-widget-header ui-corner-all'>" +
-    "New Portlet" +
-    "<span class='ui-icon ui-icon-close portlet-toggle'></span>" +
-    "</div>" +
-    "<div class='portlet-content'>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div></div>");
-  setSortable();
+  var columnId = $(column[0].parentNode.parentNode)[0].id.split('_')[1];
+
+  $.ajax({
+    type: "POST",
+    url: "/create/portlet/<column_id>/".replace("<column_id>", columnId),
+    success: function(response) {
+      var obj = jQuery.parseJSON(response);
+      if(obj.success) {
+        newPortletId = obj.id;
+
+        $(column[0].parentNode.parentNode).append(
+          "<div id='portlet_" + newPortletId + "' class='portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'>" +
+          "<div class='portlet-header ui-widget-header ui-corner-all'>" +
+          "New Portlet" +
+          "<span class='ui-icon ui-icon-close portlet-toggle'></span>" +
+          "</div>" +
+          "<div class='portlet-content'>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div></div>");
+        setSortable();
+      }
+    }
+  });
 });
 $(document).on('click', '.column-toggle', function() {
     var column = $(this);
