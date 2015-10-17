@@ -136,7 +136,19 @@ $(document).on('click', '.portlet-create', function(e) {
 });
 $(document).on('click', '.column-toggle', function() {
     var column = $(this);
-    $(column[0].parentNode.parentNode).remove();
+    var columnId = $($(column).parent()).parent().attr('id').split('_')[1];
+
+    $.ajax({
+      type: "DELETE",
+      url: "/delete/column/<column_id>/".replace("<column_id>", columnId),
+      success: function(response) {
+        var obj = jQuery.parseJSON(response);
+        if(obj.success) {
+          $($(column).parent()).parent().remove();
+        }
+      }
+    });
+
 });
 
 $(document).on('click', '.portlet-toggle', function() {

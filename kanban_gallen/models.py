@@ -21,7 +21,8 @@ class KanbanColumn(db.Model):
 
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
   title = db.Column(UnicodeString(256), nullable=False)
-  portlets = db.relationship("KanbanPortlet", backref="kanban_portlet")
+  portlets = db.relationship("KanbanPortlet", backref="kanban_portlet",
+                             cascade="all, delete-orphan")
 
   def __init__(self, title):
     self.title = title

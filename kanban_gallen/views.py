@@ -61,3 +61,21 @@ def create_portlet(column_id):
     return create_portlet_result(False)
   return create_portlet_result(True, portlet.id, portlet.title,
                                portlet.content)
+
+
+@app.route('/delete/column/<column_id>', methods=['DELETE'])
+@app.route('/delete/column/<column_id>/', methods=['DELETE'])
+def delete_column(column_id):
+  column = KanbanColumn.query.get(column_id)
+
+  if not column:
+    abort(httplib.NOT_FOUND, 'COLUMN NOT FOUND')
+
+  try:
+    db.session.delete(column)
+    db.session.commit()
+  except IntegrityError:
+    abort(httplib.BAD_REQUEST, 'BAD REQUEST')
+
+  msg = "Deleted Column: {0}.".format(column_id)
+  return json.dumps({'success': True, 'msg': msg})
