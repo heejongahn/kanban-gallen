@@ -70,32 +70,33 @@
 <script src="/static/js/jquery-1.11.3.min.js"></script>
 <script src="/static/js/jquery-ui.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-  function setSortable() {
-    $( ".column-lists" ).sortable({
-      connectWith: ".column-lists",
-      handle: ".column-header",
-      cancel: ".column-toggle",
-      start: function (event, ui) {
-        ui.item.addClass('tilt');
-      },
-      stop: function (event, ui) {
-        ui.item.removeClass('tilt');
-      }
-    });
+function setSortable() {
+  $( ".column-lists" ).sortable({
+    connectWith: ".column-lists",
+    handle: ".column-header",
+    cancel: ".column-toggle",
+    start: function (event, ui) {
+      ui.item.addClass('tilt');
+    },
+    stop: function (event, ui) {
+      ui.item.removeClass('tilt');
+    }
+  });
 
-    $( ".column" ).sortable({
-      connectWith: ".column",
-      handle: ".portlet-header",
-      cancel: ".portlet-toggle",
-      start: function (event, ui) {
-        ui.item.addClass('tilt');
-      },
-      stop: function (event, ui) {
-        ui.item.removeClass('tilt');
-      }
-    });
-  }
+  $( ".column" ).sortable({
+    connectWith: ".column",
+    handle: ".portlet-header",
+    cancel: ".portlet-toggle",
+    start: function (event, ui) {
+      ui.item.addClass('tilt');
+    },
+    stop: function (event, ui) {
+      ui.item.removeClass('tilt');
+    }
+  });
+}
+
+$(document).ready(function() {
   setSortable();
 
   // add jquery-ui class
@@ -107,11 +108,13 @@ $(document).ready(function() {
 
   $(".column-header")
     .addClass("ui-widget-header ui-corner-all")
+    .append("<span class='ui-icon ui-icon-plus portlet-create'></span>")
     .append("<span class='ui-icon ui-icon-close column-toggle'></span>");
 
   $(".portlet-header")
     .addClass("ui-widget-header ui-corner-all")
     .append("<span class='ui-icon ui-icon-close portlet-toggle'></span>");
+
 
   // create new column
   $("#create_column").on('click', function() {
@@ -120,10 +123,23 @@ $(document).ready(function() {
       "<div class='column-header ui-widget-header ui-corner-all'>" +
       "New Column" +
       "<span class='ui-icon ui-icon-close column-toggle'></span>" +
+      "<span class='ui-icon ui-icon-plus portlet-create'></span>" +
       "</div>" +
       "</div>");
     setSortable();
   });
+});
+
+$(document).on('click', '.portlet-create', function() {
+  var column = $(this);
+  $(column[0].parentNode.parentNode).append(
+    "<div class='portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'>" +
+    "<div class='portlet-header ui-widget-header ui-corner-all'>" +
+    "New Portlet" +
+    "<span class='ui-icon ui-icon-close portlet-toggle'></span>" +
+    "</div>" +
+    "<div class='portlet-content'>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div></div>");
+  setSortable();
 });
 $(document).on('click', '.column-toggle', function() {
     var column = $(this);
