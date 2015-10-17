@@ -4,8 +4,10 @@
 from flask import render_template
 
 from kanban_gallen import app
+from .models import KanbanColumn
 
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
+  columns = KanbanColumn.query.all()
+  return render_template('index.html', columns=columns)

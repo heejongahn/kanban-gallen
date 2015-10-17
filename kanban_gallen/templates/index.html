@@ -13,57 +13,23 @@
     </button>
     <!-- column lists -->
     <div class="column-lists">
-      <div class="column">
+      {% for column in columns %}
+      <div id="column_{{ column.id }}" class="column">
         <div class="column-header">
-          Column 1
+          {{ column.title }}
         </div>
-        <div class="portlet">
+        {% for portlet in column.portlets %}
+        <div id="portlet_{{ portlet.id }}" class="portlet">
           <div class="portlet-header">
-            Alpha
+            {{ portlet.title }}
           </div>
-          <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-        </div>
-        <div class="portlet">
-          <div class="portlet-header">
-            Bravo
+          <div class="portlet-content">
+            {{ portlet.content }}
           </div>
-          <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
         </div>
+        {% endfor %}
       </div>
-      <div class="column">
-        <div class="column-header">
-          Column 2
-        </div>
-        <div class="portlet">
-          <div class="portlet-header">
-            Charlie
-          </div>
-          <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-        </div>
-        <div class="portlet">
-          <div class="portlet-header">
-            Delta
-          </div>
-          <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="column-header">
-          Column 3
-        </div>
-        <div class="portlet">
-          <div class="portlet-header">
-            Echo
-          </div>
-          <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-        </div>
-        <div class="portlet">
-          <div class="portlet-header">
-            Foxtrot
-          </div>
-          <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-        </div>
-      </div>
+      {% endfor %}
     <!-- end column list -->
     </div>
   </body>
