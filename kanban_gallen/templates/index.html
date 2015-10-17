@@ -13,52 +13,52 @@
     </button>
     <!-- column lists -->
     <div class="column-lists">
-      <div class="column ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-        <div class="column-header ui-widget-header ui-corner-all">
+      <div class="column">
+        <div class="column-header">
           Column 1
         </div>
-        <div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-          <div class="portlet-header ui-widget-header ui-corner-all">
+        <div class="portlet">
+          <div class="portlet-header">
             Alpha
           </div>
           <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
         </div>
-        <div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-          <div class="portlet-header ui-widget-header ui-corner-all">
+        <div class="portlet">
+          <div class="portlet-header">
             Bravo
           </div>
           <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
         </div>
       </div>
-      <div class="column ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-        <div class="column-header ui-widget-header ui-corner-all">
+      <div class="column">
+        <div class="column-header">
           Column 2
         </div>
-        <div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-          <div class="portlet-header ui-widget-header ui-corner-all">
+        <div class="portlet">
+          <div class="portlet-header">
             Charlie
           </div>
           <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
         </div>
-        <div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-          <div class="portlet-header ui-widget-header ui-corner-all">
+        <div class="portlet">
+          <div class="portlet-header">
             Delta
           </div>
           <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
         </div>
       </div>
-      <div class="column ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-        <div class="column-header ui-widget-header ui-corner-all">
+      <div class="column">
+        <div class="column-header">
           Column 3
         </div>
-        <div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-          <div class="portlet-header ui-widget-header ui-corner-all">
+        <div class="portlet">
+          <div class="portlet-header">
             Echo
           </div>
           <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
         </div>
-        <div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-          <div class="portlet-header ui-widget-header ui-corner-all">
+        <div class="portlet">
+          <div class="portlet-header">
             Foxtrot
           </div>
           <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
@@ -71,42 +71,69 @@
 <script src="/static/js/jquery-ui.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-  $( ".column-lists" ).sortable({
-    connectWith: ".column-lists",
-    handle: ".column-header",
-    cancel: ".column-toggle",
-    start: function (event, ui) {
-      ui.item.addClass('tilt');
-    },
-    stop: function (event, ui) {
-      ui.item.removeClass('tilt');
-    }
-  });
+  function setSortable() {
+    $( ".column-lists" ).sortable({
+      connectWith: ".column-lists",
+      handle: ".column-header",
+      cancel: ".column-toggle",
+      start: function (event, ui) {
+        ui.item.addClass('tilt');
+      },
+      stop: function (event, ui) {
+        ui.item.removeClass('tilt');
+      }
+    });
 
-  $( ".column" ).sortable({
-    connectWith: ".column",
-    handle: ".portlet-header",
-    cancel: ".portlet-toggle",
-    start: function (event, ui) {
-      ui.item.addClass('tilt');
-    },
-    stop: function (event, ui) {
-      ui.item.removeClass('tilt');
-    }
-  });
+    $( ".column" ).sortable({
+      connectWith: ".column",
+      handle: ".portlet-header",
+      cancel: ".portlet-toggle",
+      start: function (event, ui) {
+        ui.item.addClass('tilt');
+      },
+      stop: function (event, ui) {
+        ui.item.removeClass('tilt');
+      }
+    });
+  }
+  setSortable();
+
+  // add jquery-ui class
+  $(".column")
+    .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all");
+
+  $(".portlet")
+    .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all");
 
   $(".column-header")
-    .prepend("<span class='column-toggle'></span>");
+    .addClass("ui-widget-header ui-corner-all")
+    .append("<span class='ui-icon ui-icon-close column-toggle'></span>");
 
   $(".portlet-header")
-    .prepend("<span class='portlet-toggle'></span>");
+    .addClass("ui-widget-header ui-corner-all")
+    .append("<span class='ui-icon ui-icon-close portlet-toggle'></span>");
 
-  $("#create_column").click(function() {
-      $(".column-lists").append(
-        "<div class='column ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'>" +
-        "<div class='column-header ui-widget-header ui-corner-all'>New Column</div>" +
-        "</div>");
+  // create new column
+  $("#create_column").on('click', function() {
+    $(".column-lists").append(
+      "<div class='column ui-sortable ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'>" +
+      "<div class='column-header ui-widget-header ui-corner-all'>" +
+      "New Column" +
+      "<span class='ui-icon ui-icon-close column-toggle'></span>" +
+      "</div>" +
+      "</div>");
+    setSortable();
   });
 });
+$(document).on('click', '.column-toggle', function() {
+    var column = $(this);
+    $(column[0].parentNode.parentNode).remove();
+});
+
+$(document).on('click', '.portlet-toggle', function() {
+    var portlet = $(this);
+    $(portlet[0].parentNode.parentNode).remove();
+});
+
 </script>
 </html>

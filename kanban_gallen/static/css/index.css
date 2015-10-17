@@ -25,6 +25,23 @@ body {
   margin-bottom: 0.5em;
   position: relative;
 }
+.column-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  margin-top: -8px;
+}
+.portlet-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  margin-top: -8px;
+}
 .portlet-content {
   padding: 0.4em;
+}
+.column-header {
+  padding: 0.2em 0.3em;
+  margin-bottom: 0.5em;
+  position: relative;
 }
