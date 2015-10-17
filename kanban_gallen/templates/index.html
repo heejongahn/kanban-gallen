@@ -3,39 +3,102 @@
   <head>
     <meta charset="UTF-8">
     <title>Index</title>
+    <link rel="stylesheet" href="/static/css/jquery-ui.css" type="text/css" media="all">
     <link rel="stylesheet" href="/static/css/index.css" type="text/css" media="all">
   </head>
   <body>
     <h3> Index page</h3>
-  <div class="column">
-    <div class="portlet">
-      <div class="portlet-header">Alpha</div>
-      <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+    <div class="column-lists">
+      <div class="column ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+        <div class="column-header ui-widget-header ui-corner-all">
+          Column 1
+        </div>
+        <div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+          <div class="portlet-header ui-widget-header ui-corner-all">
+            Alpha
+          </div>
+          <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+        </div>
+        <div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+          <div class="portlet-header ui-widget-header ui-corner-all">
+            Bravo
+          </div>
+          <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+        </div>
+      </div>
+      <div class="column ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+        <div class="column-header ui-widget-header ui-corner-all">
+          Column 2
+        </div>
+        <div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+          <div class="portlet-header ui-widget-header ui-corner-all">
+            Charlie
+          </div>
+          <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+        </div>
+        <div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+          <div class="portlet-header ui-widget-header ui-corner-all">
+            Delta
+          </div>
+          <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+        </div>
+      </div>
+      <div class="column ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+        <div class="column-header ui-widget-header ui-corner-all">
+          Column 3
+        </div>
+        <div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+          <div class="portlet-header ui-widget-header ui-corner-all">
+            Echo
+          </div>
+          <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+        </div>
+        <div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+          <div class="portlet-header ui-widget-header ui-corner-all">
+            Foxtrot
+          </div>
+          <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+        </div>
+      </div>
+    <!-- end column list -->
     </div>
-    <div class="portlet">
-      <div class="portlet-header">Bravo</div>
-      <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-    </div>
-  </div>
-  <div class="column">
-    <div class="portlet">
-      <div class="portlet-header">Charlie</div>
-      <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-    </div>
-    <div class="portlet">
-      <div class="portlet-header">Delta</div>
-      <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-    </div>
-  </div>
-  <div class="column">
-    <div class="portlet">
-      <div class="portlet-header">Echo</div>
-      <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-    </div>
-    <div class="portlet">
-      <div class="portlet-header">Foxtrot</div>
-      <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-    </div>
-  </div>
   </body>
+<script src="/static/js/jquery-1.11.3.min.js"></script>
+<script src="/static/js/jquery-ui.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  $( ".column-lists" ).sortable({
+    connectWith: ".column-lists",
+    handle: ".column-header",
+    cancel: ".column-toggle",
+    start: function (event, ui) {
+      ui.item.addClass('tilt');
+    },
+    stop: function (event, ui) {
+      ui.item.removeClass('tilt');
+    }
+  });
+
+  $( ".column" ).sortable({
+    connectWith: ".column",
+    handle: ".portlet-header",
+    cancel: ".portlet-toggle",
+    start: function (event, ui) {
+      ui.item.addClass('tilt');
+    },
+    stop: function (event, ui) {
+      ui.item.removeClass('tilt');
+    }
+  });
+
+  $(".column-header")
+    .addClass("ui-widget-header ui-corner-all")
+    .prepend("<span class='column-toggle'></span>");
+
+  $(".portlet-header")
+    .addClass("ui-widget-header ui-corner-all")
+    .prepend("<span class='portlet-toggle'></span>");
+
+});
+</script>
 </html>

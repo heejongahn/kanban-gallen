@@ -1,3 +1,9 @@
+.tilt {
+  transform: rotate(3deg);
+  -moz-transform: rotate(3deg);
+  -webkit-transform: rotate(3deg);
+}
+
 body {
   min-width: 520px;
 }
@@ -6,6 +12,7 @@ body {
   width: 170px;
   float: left;
   padding-bottom: 100px;
+  margin-right: 10px;
 }
 .portlet {
   margin: 0 1em 1em 0;
