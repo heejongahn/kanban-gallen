@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="/static/css/index.css" type="text/css" media="all">
   </head>
   <body>
-    <h3> Index page</h3>
+    <!-- create new column -->
+    <button id="create_column" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button">
+      <span class="ui-button-text">Create Column</span>
+    </button>
+    <!-- column lists -->
     <div class="column-lists">
       <div class="column ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
         <div class="column-header ui-widget-header ui-corner-all">
@@ -99,6 +103,12 @@ $(document).ready(function() {
     .addClass("ui-widget-header ui-corner-all")
     .prepend("<span class='portlet-toggle'></span>");
 
+  $("#create_column").click(function() {
+      $(".column-lists").append(
+        "<div class='column ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'>" +
+        "<div class='column-header ui-widget-header ui-corner-all'>New Column</div>" +
+        "</div>");
+  });
 });
 </script>
 </html>

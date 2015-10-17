@@ -7,7 +7,9 @@
 body {
   min-width: 520px;
 }
-
+#create_column {
+  margin-bottom: 20px;
+}
 .column {
   width: 170px;
   float: left;
