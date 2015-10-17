@@ -79,3 +79,21 @@ def delete_column(column_id):
 
   msg = "Deleted Column: {0}.".format(column_id)
   return json.dumps({'success': True, 'msg': msg})
+
+
+@app.route('/delete/portlet/<portlet_id>', methods=['DELETE'])
+@app.route('/delete/portlet/<portlet_id>/', methods=['DELETE'])
+def delete_portlet(portlet_id):
+  portlet = KanbanPortlet.query.get(portlet_id)
+
+  if not portlet:
+    abort(httplib.NOT_FOUND, 'PORTLET NOT FOUND')
+
+  try:
+    db.session.delete(portlet)
+    db.session.commit()
+  except IntegrityError:
+    abort(httplib.BAD_REQUEST, 'BAD REQUEST')
+
+  msg = "Deleted Card: {0}.".format(portlet_id)
+  return json.dumps({'success': True, 'msg': msg})

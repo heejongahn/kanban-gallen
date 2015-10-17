@@ -153,7 +153,18 @@ $(document).on('click', '.column-toggle', function() {
 
 $(document).on('click', '.portlet-toggle', function() {
     var portlet = $(this);
-    $(portlet[0].parentNode.parentNode).remove();
+    var portletId = $($(portlet).parent()).parent().attr('id').split('_')[1];
+
+    $.ajax({
+      type: "DELETE",
+      url: "/delete/portlet/<portlet_id>/".replace("<portlet_id>", portletId),
+      success: function(response) {
+        var obj = jQuery.parseJSON(response);
+        if(obj.success) {
+          $($(portlet).parent()).parent().remove();
+        }
+      }
+    });
 });
 
 $(document).on('click', '.portlet-header', function() {
