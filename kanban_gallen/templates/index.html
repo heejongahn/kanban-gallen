@@ -84,16 +84,28 @@ $(document).ready(function() {
 
 
   // create new column
-  $("#create_column").on('click', function() {
-    $(".column-lists").append(
-      "<div class='column ui-sortable ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'>" +
-      "<div class='column-header ui-widget-header ui-corner-all'>" +
-      "New Column" +
-      "<span class='ui-icon ui-icon-close column-toggle'></span>" +
-      "<span class='ui-icon ui-icon-plus portlet-create'></span>" +
-      "</div>" +
-      "</div>");
-    setSortable();
+  $("#create_column").on('click', function(e) {
+    e.preventDefault();
+    var newColumnId = false;
+    $.ajax({
+      type: "POST",
+      url: "/create/column/",
+      success: function(response) {
+        var obj = jQuery.parseJSON(response);
+        if(obj.success) {
+          newColumnId = obj.id;
+          $(".column-lists").append(
+            "<div id='column_" + newColumnId + "' class='column ui-sortable ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'>" +
+            "<div class='column-header ui-widget-header ui-corner-all'>" +
+            "New Column" +
+            "<span class='ui-icon ui-icon-close column-toggle'></span>" +
+            "<span class='ui-icon ui-icon-plus portlet-create'></span>" +
+            "</div>" +
+            "</div>");
+          setSortable();
+        }
+      }
+    });
   });
 });
 
