@@ -10,7 +10,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.config.from_object('kanban_gallen.settings')
 
-if os.environ.has_key('KANBAN_GALLEN'):
+if 'KANBAN_GALLEN' in os.environ:
   app.config.fron_envvar('KANBAN_GALLEN')
 
 db = SQLAlchemy(app)

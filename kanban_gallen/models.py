@@ -9,7 +9,7 @@ from kanban_gallen import db
 
 def UnicodeString(n):
   return db.Unicode(n).with_variant(
-    mysql.VARCHAR(n, collation='utf8_bin'), 'mysql')
+      mysql.VARCHAR(n, collation='utf8_bin'), 'mysql')
 
 
 def Text():
@@ -49,11 +49,11 @@ class KanbanPortlet(db.Model):
 
   def to_dict(self):
     return {
-      'id': self.id,
-      'title': self.title,
-      'content': self.content,
-      'tag': self.tag,
-      'created': self.created,
-      'modified': self.modified,
-      'archived': self.archived
+        'id': self.id,
+        'title': self.title,
+        'content': self.content,
+        'tag': self.tag,
+        'created': self.created,
+        'modified': self.modified,
+        'archived': self.archived
     }
