@@ -3,34 +3,42 @@
   <head>
     <meta charset="UTF-8">
     <title>Index</title>
+    <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.css" type="text/css" media="all">
+    <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap-theme.css" type="text/css" media="all">
     <link rel="stylesheet" href="/static/css/jquery-ui.css" type="text/css" media="all">
     <link rel="stylesheet" href="/static/css/index.css" type="text/css" media="all">
   </head>
   <body>
-    <!-- create new column -->
-    <button id="create_column" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button">
-      <span class="ui-button-text">Create Column</span>
-    </button>
-    <!-- column lists -->
-    <div class="column-lists">
-      {% for column in columns %}
-      <div id="column_{{ column.id }}" class="column">
-        <div class="column-header">
-          {{ column.title }}
-        </div>
-        {% for portlet in column.portlets %}
-        <div id="portlet_{{ portlet.id }}" class="portlet">
-          <div class="portlet-header">
-            {{ portlet.title }}
+    <div class="board-active col-md-9">
+      <!-- create new column -->
+      <button id="create_column" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button">
+        <span class="ui-button-text">Create Column</span>
+      </button>
+      <!-- column lists -->
+      <div class="column-lists">
+        {% for column in columns %}
+        <div id="column_{{ column.id }}" class="column">
+          <div class="column-header">
+            {{ column.title }}
           </div>
-          <div class="portlet-content">
-            {{ portlet.content }}
+          {% for portlet in column.portlets %}
+          <div id="portlet_{{ portlet.id }}" class="portlet">
+            <div class="portlet-header">
+              {{ portlet.title }}
+            </div>
+            <div class="portlet-content">
+              {{ portlet.content }}
+            </div>
           </div>
+          {% endfor %}
         </div>
         {% endfor %}
+      <!-- end column list -->
       </div>
-      {% endfor %}
-    <!-- end column list -->
+    </div>
+    <div class="board-archive col-md-3">
+      <!-- card archiving section -->
+      <h4>Archive</h4>
     </div>
   </body>
 <script src="/static/js/jquery-1.11.3.min.js"></script>
@@ -95,7 +103,8 @@ $(document).ready(function() {
 
   $(".portlet-header")
     .addClass("ui-widget-header ui-corner-all")
-    .append("<span class='ui-icon ui-icon-close portlet-toggle'></span>");
+    .append("<span class='ui-icon ui-icon-close portlet-toggle'></span>")
+    .append("<span class='ui-icon ui-icon-folder-open portlet-archive'></span>");
 
 
   // create new column
@@ -142,6 +151,7 @@ $(document).on('click', '.portlet-create', function(e) {
           "<div class='portlet-header ui-widget-header ui-corner-all'>" +
           "New Portlet" +
           "<span class='ui-icon ui-icon-close portlet-toggle'></span>" +
+          "<span class='ui-icon ui-icon-folder-open portlet-archive'></span>" +
           "</div>" +
           "<div class='portlet-content'>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div></div>");
         setSortable();
