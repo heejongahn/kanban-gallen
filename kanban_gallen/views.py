@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # vim: fileencoding=utf-8 tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+"""views.py"""
 
 import datetime
 import httplib
@@ -12,17 +13,20 @@ from kanban_gallen import app, db
 from .models import KanbanColumn, KanbanPortlet
 
 
-def create_column_result(success, id=None, title=None):
-  return json.dumps({'success': success, 'id': id, 'title': title})
+def create_column_result(success, _id=None, title=None):
+  """ column 생성 시 리턴할 메시지 만들어 줌 """
+  return json.dumps({'success': success, 'id': _id, 'title': title})
 
 
-def create_portlet_result(success, id=None, title=None, content=None):
-  return json.dumps({'success': success, 'id': id, 'title': title,
-                    'content': content})
+def create_portlet_result(success, _id=None, title=None, content=None):
+  """ portlet 생성 시 리턴할 메시지 만들어 줌 """
+  return json.dumps({'success': success, 'id': _id, 'title': title,
+                     'content': content})
 
 
 @app.route('/', methods=['GET'])
 def index():
+  """ index 페이지 리턴 """
   columns = KanbanColumn.query.all()
   archived_portlets = KanbanPortlet.query.filter_by(archived=True).all()
   return render_template('index.html', columns=columns,
@@ -32,6 +36,7 @@ def index():
 @app.route('/archive/portlet/<element_id>', methods=['PUT'])
 @app.route('/archive/portlet/<element_id>/', methods=['PUT'])
 def archive_portlets(element_id):
+  """ portlet 하나 혹은 한 column내의 모든 portlet 아카이브 """
   element_type = request.values['type']
   id_list = []
   # portlet 하나를 아카이브 할 때
@@ -45,13 +50,11 @@ def archive_portlets(element_id):
     column = KanbanColumn.query.get(element_id)
 
     # 이미 아카이브가 된 portlet들은 제외한 portlet들을 아카이브 하기 위함
-    portlets = list(map(lambda p: p if p.archived is False else None,
-                        column.portlets))
+    portlets = [p for p in column.portlets if p.archived is False]
 
     for portlet in portlets:
-      if portlet is not None:
-        portlet.archived = True
-        id_list.append(portlet.id)
+      portlet.archived = True
+      id_list.append(portlet.id)
   try:
     db.session.commit()
   except IntegrityError:
@@ -62,6 +65,7 @@ def archive_portlets(element_id):
 @app.route('/create/column', methods=['POST'])
 @app.route('/create/column/', methods=['POST'])
 def create_column():
+  """ column 생성 """
   new_title = 'Column'
   column = KanbanColumn(new_title)
   try:
@@ -78,6 +82,7 @@ def create_column():
 @app.route('/create/portlet/<column_id>', methods=['POST'])
 @app.route('/create/portlet/<column_id>/', methods=['POST'])
 def create_portlet(column_id):
+  """ portlet 생성 """
   column = KanbanColumn.query.get(column_id)
 
   if not column:
@@ -100,6 +105,7 @@ def create_portlet(column_id):
 @app.route('/edit/portlet/<portlet_id>', methods=['PUT'])
 @app.route('/edit/portlet/<portlet_id>/', methods=['PUT'])
 def edit_portlet(portlet_id):
+  """ portlet 정보 수정 """
   portlet = KanbanPortlet.query.get(portlet_id)
 
   portlet.modified = datetime.datetime.utcnow()
@@ -121,6 +127,7 @@ def edit_portlet(portlet_id):
 @app.route('/delete/column/<column_id>', methods=['DELETE'])
 @app.route('/delete/column/<column_id>/', methods=['DELETE'])
 def delete_column(column_id):
+  """ column 삭제 """
   column = KanbanColumn.query.get(column_id)
 
   if not column:
@@ -139,6 +146,7 @@ def delete_column(column_id):
 @app.route('/delete/portlet/<portlet_id>', methods=['DELETE'])
 @app.route('/delete/portlet/<portlet_id>/', methods=['DELETE'])
 def delete_portlet(portlet_id):
+  """ portlet 삭제 """
   portlet = KanbanPortlet.query.get(portlet_id)
 
   if not portlet:
