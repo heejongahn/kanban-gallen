@@ -51,7 +51,7 @@ def create_portlet(column_id):
     abort(httplib.NOT_FOUND, 'COLUMN NOT FOUND')
 
   new_title = "New Portlet"
-  new_content = "Lorem ipsum"
+  new_content = "click to edit..."
   portlet = KanbanPortlet(new_title, new_content)
   try:
     column.portlets.append(portlet)
