@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # vim: fileencoding=utf-8 tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 
+import datetime
 import httplib
 import json
 
@@ -67,8 +68,13 @@ def create_portlet(column_id):
 @app.route('/edit/portlet/<portlet_id>/', methods=['PUT'])
 def edit_portlet(portlet_id):
   portlet = KanbanPortlet.query.get(portlet_id)
-  title = request.values['title']
-  portlet.title = title
+
+  portlet.modified = datetime.datetime.utcnow()
+  if 'title' in request.values:
+    portlet.title = request.values['title']
+  elif 'content' in request.values:
+    portlet.content = request.values['content']
+
   try:
     db.session.commit()
   except IntegrityError:

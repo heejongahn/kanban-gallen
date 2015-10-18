@@ -167,6 +167,7 @@ $(document).on('click', '.portlet-toggle', function() {
     });
 });
 
+// 카드 제목 수정
 $(document).on('click', '.portlet-header', function() {
   var title = $(this);
   var portletId = $(title.parent()).attr('id').split('_')[1];
@@ -190,6 +191,32 @@ $(document).on('click', '.portlet-header', function() {
     $(this).remove();
   });
   title.show();
+});
+
+// 카드 본문 수정
+$(document).on('click', '.portlet-content', function() {
+  var content = $(this);
+  var portletId = $(content.parent()).attr('id').split('_')[1];
+
+  content.hide();
+  var inputBox = $("<input name='edit' class='edit-content' type='text' />");
+  content.after(inputBox);
+  inputBox.focus();
+  inputBox.blur(function() {
+    if ($.trim(this.value) != '') {
+      var newContent = $(this).val();
+      content.html(newContent);
+      $.ajax({
+        type: "PUT",
+        data: {
+          'content': newContent,
+        },
+        url: "/edit/portlet/<portlet_id>/".replace("<portlet_id>", portletId)
+      });
+    }
+    $(this).remove();
+  });
+  content.show();
 });
 </script>
 </html>
