@@ -86,6 +86,21 @@ function setSortable() {
   });
 }
 
+// portlet이나 column을 삭제
+function requestDeleteElement(type, element, elementId) {
+  var requestUrl = "/delete/" + type + "/" + elementId + "/";
+    $.ajax({
+      type: "DELETE",
+      url: requestUrl,
+      success: function(response) {
+        var obj = jQuery.parseJSON(response);
+        if(obj.success) {
+          $($(element).parent()).parent().remove();
+        }
+      }
+    });
+};
+
 $(document).ready(function() {
   setSortable();
 
@@ -159,37 +174,19 @@ $(document).on('click', '.portlet-create', function(e) {
     }
   });
 });
+
+// column 삭제
 $(document).on('click', '.column-toggle', function() {
     var column = $(this);
     var columnId = $($(column).parent()).parent().attr('id').split('_')[1];
-
-    $.ajax({
-      type: "DELETE",
-      url: "/delete/column/<column_id>/".replace("<column_id>", columnId),
-      success: function(response) {
-        var obj = jQuery.parseJSON(response);
-        if(obj.success) {
-          $($(column).parent()).parent().remove();
-        }
-      }
-    });
-
+    requestDeleteElement('column', column, columnId);
 });
 
+// portlet 삭제
 $(document).on('click', '.portlet-toggle', function() {
     var portlet = $(this);
     var portletId = $($(portlet).parent()).parent().attr('id').split('_')[1];
-
-    $.ajax({
-      type: "DELETE",
-      url: "/delete/portlet/<portlet_id>/".replace("<portlet_id>", portletId),
-      success: function(response) {
-        var obj = jQuery.parseJSON(response);
-        if(obj.success) {
-          $($(portlet).parent()).parent().remove();
-        }
-      }
-    });
+    requestDeleteElement('portlet', portlet, portletId);
 });
 
 // 카드 제목 수정

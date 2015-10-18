@@ -25,12 +25,7 @@ body {
   margin-bottom: 0.5em;
   position: relative;
 }
-.column-toggle {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  margin-top: -8px;
-}
+.column-toggle,
 .portlet-toggle {
   position: absolute;
   top: 50%;
