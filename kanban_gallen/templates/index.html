@@ -123,6 +123,31 @@ function requestDeleteElement(type, element, elementId) {
     });
 };
 
+// portlet 하나 혹은 column 하나 안의 모든 portlet들을 아카이브
+function requestArchiveElement(type, elementId) {
+  // app에 column 안의 모든 카드를 아카이브 하도록 리퀘스트 보냄
+  $.ajax({
+    type: "PUT",
+    data: {
+      'type': type,
+    },
+    url: "/archive/portlet/<id>/".replace("<id>", elementId),
+    success: function(response) {
+      var obj = jQuery.parseJSON(response);
+      if(obj.success) {
+        var id_list = obj.id_list
+        for(i in id_list) {
+          // 아카이빙에 성공하면 원래 있던 자리에서 지우고 오른쪽에 표시
+          var portletId = "#portlet_" + id_list[i];
+          console.log(portletId);
+          $(portletId).append("<span class='label label-primary'>Archived</span>");
+          $(".board-archive").append($(portletId));
+        }
+      }
+    }
+  });
+};
+
 $(document).ready(function() {
   setSortable();
 
@@ -249,51 +274,14 @@ $(document).on('click', '.portlet-content', function() {
 $(document).on('click', '.portlet-archive', function() {
   var portlet = $(this);
   var portletId = $($(portlet).parent()).parent().attr('id').split('_')[1];
-
-  // app에 아카이브 하는 리퀘스트 보냄
-  $.ajax({
-    type: "PUT",
-    data: {
-      'archived': true,
-    },
-    url: "/edit/portlet/<portlet_id>/".replace("<portlet_id>", portletId),
-    success: function(response) {
-      var obj = jQuery.parseJSON(response);
-      if(obj.success) {
-      // 아카이빙에 성공하면 원래 있던 자리에서 지우고 오른쪽에 표시
-      $($($(portlet).parent()).parent()).append("<span class='label label-primary'>Archived</span>");
-      $(".board-archive").append($($(portlet).parent()).parent());
-      }
-    }
-  });
+  requestArchiveElement('portlet', portletId);
 });
 
 // column 안에 있는 모든 카드 아카이브
 $(document).on('click', '.portlet-archive-all', function() {
   var column = $(this);
   var columnId = $($(column).parent()).parent().attr('id').split('_')[1];
-
-  // app에 column 안의 모든 카드를 아카이브 하도록 리퀘스트 보냄
-  $.ajax({
-    type: "PUT",
-    data: {
-      'type': 'column',
-    },
-    url: "/archive/portlet/<id>/".replace("<id>", columnId),
-    success: function(response) {
-      var obj = jQuery.parseJSON(response);
-      if(obj.success) {
-        var id_list = obj.id_list
-        for(i in id_list) {
-          // 아카이빙에 성공하면 원래 있던 자리에서 지우고 오른쪽에 표시
-          var portletId = "#portlet_" + id_list[i];
-          console.log(portletId);
-          $(portletId).append("<span class='label label-primary'>Archived</span>");
-          $(".board-archive").append($(portletId));
-        }
-      }
-    }
-  });
+  requestArchiveElement('column', columnId);
 });
 
 </script>

@@ -51,7 +51,7 @@ def archive_portlets(element_id):
       db.session.commit()
     except IntegrityError:
       abort(httplib.BAD_REQUEST, 'BAD REQUEST')
-    return json.dumps({'success': True, 'id_list': id_list})
+  return json.dumps({'success': True, 'id_list': id_list})
 
 
 @app.route('/create/column', methods=['POST'])
@@ -103,8 +103,6 @@ def edit_portlet(portlet_id):
     portlet.content = request.values['content']
   elif 'column_id' in request.values:
     portlet.column_id = request.values['column_id']
-  elif 'archived' in request.values:
-    portlet.archived = True
 
   try:
     db.session.commit()
