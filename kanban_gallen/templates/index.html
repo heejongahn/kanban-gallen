@@ -201,7 +201,8 @@ $(document).on('click', '.portlet-header', function() {
   inputBox.blur(function() {
     if ($.trim(this.value) != '') {
       var newTitle = $(this).val();
-      title.html(newTitle + "<span class='ui-icon ui-icon-close portlet-toggle'></span>");
+      title.html(newTitle + "<span class='ui-icon ui-icon-close portlet-toggle'></span>" +
+        "<span class='ui-icon ui-icon-folder-open portlet-archive'></span>");
       $.ajax({
         type: "PUT",
         data: {
