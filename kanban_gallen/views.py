@@ -57,11 +57,12 @@ def archive_portlets(element_id):
 @app.route('/create/column', methods=['POST'])
 @app.route('/create/column/', methods=['POST'])
 def create_column():
-  new_title = 'New Column'
+  new_title = 'Column'
   column = KanbanColumn(new_title)
-
   try:
     db.session.add(column)
+    db.session.commit()
+    column.title = 'Column {0}'.format(column.id)
     db.session.commit()
   except IntegrityError:
     abort(httplib.BAD_REQUEST, 'BAD REQUEST')
