@@ -11,6 +11,7 @@
   </head>
   <body>
     <div class="board-active col-md-9">
+      <h4>Board</h4>
       <!-- create new column -->
       <button id="create_column" class="btn btn-sm btn-info" type="button">
         Create Column
@@ -56,6 +57,7 @@
           <div class="portlet-content">
             {{ portlet.content }}
           </div>
+          <span class = "label label-primary">Archived</span>
         </div>
       {% endfor %}
     </div>
@@ -258,7 +260,8 @@ $(document).on('click', '.portlet-archive', function() {
       var obj = jQuery.parseJSON(response);
       if(obj.success) {
       // 아카이빙에 성공하면 원래 있던 자리에서 지우고 오른쪽에 표시
-        $(".board-archive").append($($(portlet).parent()).parent());
+      $($($(portlet).parent()).parent()).append("<span class='label label-primary'>Archived</span>");
+      $(".board-archive").append($($(portlet).parent()).parent());
       }
     }
   });
