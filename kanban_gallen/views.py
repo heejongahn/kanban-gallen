@@ -74,6 +74,8 @@ def edit_portlet(portlet_id):
     portlet.title = request.values['title']
   elif 'content' in request.values:
     portlet.content = request.values['content']
+  elif 'column_id' in request.values:
+    portlet.column_id = request.values['column_id']
 
   try:
     db.session.commit()

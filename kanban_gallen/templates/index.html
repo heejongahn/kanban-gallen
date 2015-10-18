@@ -59,6 +59,21 @@ function setSortable() {
     },
     stop: function (event, ui) {
       ui.item.removeClass('tilt');
+      // 드래그가 끝나면 column을 옮겨간 것을 업데이트해야 한다
+      var oldColumnId = $(this).attr('id').split('_')[1],
+          portletId = ui.item.attr('id').split('_')[1],
+          newColumnId = $(ui.item).parent().attr('id').split('_')[1];
+
+      // 다른 column으로 옮겨갔을 때만 업데이트 한다
+      if (oldColumnId != newColumnId) {
+        $.ajax({
+          type: "PUT",
+          data: {
+            'column_id': newColumnId,
+          },
+          url: "/edit/portlet/<portlet_id>/".replace("<portlet_id>", portletId)
+        });
+      }
     }
   });
 }
