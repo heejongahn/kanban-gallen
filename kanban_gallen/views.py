@@ -67,7 +67,6 @@ def create_portlet(column_id):
 @app.route('/edit/portlet/<portlet_id>/', methods=['PUT'])
 def edit_portlet(portlet_id):
   portlet = KanbanPortlet.query.get(portlet_id)
-  print dir(request)
   title = request.values['title']
   portlet.title = title
   try:
