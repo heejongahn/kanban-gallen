@@ -43,10 +43,15 @@ def archive_portlets(element_id):
   # 한 column 내의 모든 portlet들을 아카이브 할 때
   elif element_type == "column":
     column = KanbanColumn.query.get(element_id)
-    portlets = column.portlets
+
+    # 이미 아카이브가 된 portlet들은 제외한 portlet들을 아카이브 하기 위함
+    portlets = list(map(lambda p: p if p.archived is False else None,
+                        column.portlets))
+
     for portlet in portlets:
-      portlet.archived = True
-      id_list.append(portlet.id)
+      if portlet is not None:
+        portlet.archived = True
+        id_list.append(portlet.id)
     try:
       db.session.commit()
     except IntegrityError:
