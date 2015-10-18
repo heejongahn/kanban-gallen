@@ -99,7 +99,8 @@ function setSortable() {
         $.ajax({
           type: "PUT",
           data: {
-            'column_id': newColumnId,
+            'attr': 'column',
+            'value': newColumnId,
           },
           url: "/edit/portlet/<portlet_id>/".replace("<portlet_id>", portletId)
         });
@@ -147,6 +148,35 @@ function requestArchiveElement(type, elementId) {
     }
   });
 };
+
+// attr 는 title or content
+function requestEditPortlet(attr, attrName, portletId) {
+
+  attr.hide();
+  var inputBox = $("<input name='edit' class='edit-attr' type='text' />");
+  attr.after(inputBox);
+  inputBox.focus();
+  inputBox.blur(function() {
+    if ($.trim(this.value) != '') {
+      var newInput = $(this).val(),
+          newText = newInput;
+      if (attrName == "title") {
+        newText += "<i class='fa fa-times portlet-toggle'></i><i class='fa fa-archive portlet-archive'></i>";
+      }
+      attr.html(newText);
+      $.ajax({
+        type: "PUT",
+        data: {
+          'attr': attrName,
+          'value': newInput,
+        },
+        url: "/edit/portlet/<portlet_id>/".replace("<portlet_id>", portletId)
+      });
+    }
+    $(this).remove();
+  });
+  attr.show();
+}
 
 $(document).ready(function() {
   setSortable();
@@ -225,51 +255,14 @@ $(document).on('click', '.portlet-header', function() {
   var title = $(this);
   var portletId = $(title.parent()).attr('id').split('_')[1];
 
-  title.hide();
-  var inputBox = $("<input name='edit' class='edit-title' type='text' />");
-  title.after(inputBox);
-  inputBox.focus();
-  inputBox.blur(function() {
-    if ($.trim(this.value) != '') {
-      var newTitle = $(this).val();
-      title.html(newTitle + "<i class='fa fa-times portlet-toggle'></i><i class='fa fa-archive portlet-archive'></i>");
-      $.ajax({
-        type: "PUT",
-        data: {
-          'title': newTitle,
-        },
-        url: "/edit/portlet/<portlet_id>/".replace("<portlet_id>", portletId)
-      });
-    }
-    $(this).remove();
-  });
-  title.show();
+  requestEditPortlet(title, 'title', portletId);
 });
 
 // 카드 본문 수정
 $(document).on('click', '.portlet-content', function() {
   var content = $(this);
   var portletId = $(content.parent()).attr('id').split('_')[1];
-
-  content.hide();
-  var inputBox = $("<input name='edit' class='edit-content' type='text' />");
-  content.after(inputBox);
-  inputBox.focus();
-  inputBox.blur(function() {
-    if ($.trim(this.value) != '') {
-      var newContent = $(this).val();
-      content.html(newContent);
-      $.ajax({
-        type: "PUT",
-        data: {
-          'content': newContent,
-        },
-        url: "/edit/portlet/<portlet_id>/".replace("<portlet_id>", portletId)
-      });
-    }
-    $(this).remove();
-  });
-  content.show();
+  requestEditPortlet(content, 'content', portletId);
 });
 
 // 카드 아카이브

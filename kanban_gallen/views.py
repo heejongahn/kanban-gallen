@@ -109,12 +109,14 @@ def edit_portlet(portlet_id):
   portlet = KanbanPortlet.query.get(portlet_id)
 
   portlet.modified = datetime.datetime.utcnow()
-  if 'title' in request.values:
-    portlet.title = request.values['title']
-  elif 'content' in request.values:
-    portlet.content = request.values['content']
-  elif 'column_id' in request.values:
-    portlet.column_id = request.values['column_id']
+  attr = request.values['attr']
+  value = request.values['value']
+  if attr == 'title':
+    portlet.title = value
+  elif attr == 'content':
+    portlet.content = value
+  elif attr == 'column':
+    portlet.column_id = value
 
   try:
     db.session.commit()
