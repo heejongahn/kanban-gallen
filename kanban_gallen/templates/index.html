@@ -162,6 +162,7 @@ $(document).ready(function() {
         var obj = jQuery.parseJSON(response);
         if(obj.success) {
           newColumnId = obj.id;
+          // 화면에 새 리스트를 렌더링
           $(".column-lists").append(
             "<div id='column_" + newColumnId + "' class='column panel panel-info'>" +
             "<div class='column-header panel-heading'>" +
@@ -190,7 +191,7 @@ $(document).on('click', '.portlet-create', function(e) {
       var obj = jQuery.parseJSON(response);
       if(obj.success) {
         newPortletId = obj.id;
-
+        // 화면에 새 카드를 렌더링
         $(column[0].parentNode.parentNode).append(
           "<div id='portlet_" + newPortletId + "' class='portlet panel panel-info'>" +
           "<div class='portlet-header panel-heading'>" +
