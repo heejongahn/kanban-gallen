@@ -66,6 +66,8 @@
 <script src="/static/js/jquery-1.11.3.min.js"></script>
 <script src="/static/js/jquery-ui.js"></script>
 <script type="text/javascript">
+
+// 카드와 리스트를 드래그 해서 움직일 수 있도록 함
 function setSortable() {
 
   $( ".column-lists" ).sortable({
@@ -149,7 +151,7 @@ function requestArchiveElement(type, elementId) {
   });
 };
 
-// attr 는 title or content
+// 카드의 제목이나 본문을 업데이트 함
 function requestEditPortlet(attr, attrName, portletId) {
 
   attr.hide();
@@ -181,7 +183,7 @@ function requestEditPortlet(attr, attrName, portletId) {
 $(document).ready(function() {
   setSortable();
 
-  // create new column
+  // 새 리스트 생성
   $("#create_column").on('click', function(e) {
     e.preventDefault();
     var newColumnId = false;
@@ -209,6 +211,7 @@ $(document).ready(function() {
   });
 });
 
+// 새 카드 생성. 방금 새로 만들어진 컬럼에도 적용됨.
 $(document).on('click', '.portlet-create', function(e) {
   e.preventDefault();
   var column = $(this);
@@ -236,14 +239,14 @@ $(document).on('click', '.portlet-create', function(e) {
   });
 });
 
-// column 삭제
+// 리스트와 그 리스트 안의 모든 카드를 삭제
 $(document).on('click', '.column-toggle', function() {
     var column = $(this);
     var columnId = $($(column).parent()).parent().attr('id').split('_')[1];
     requestDeleteElement('column', column, columnId);
 });
 
-// portlet 삭제
+// 카드 삭제
 $(document).on('click', '.portlet-toggle', function() {
     var portlet = $(this);
     var portletId = $($(portlet).parent()).parent().attr('id').split('_')[1];
@@ -272,7 +275,7 @@ $(document).on('click', '.portlet-archive', function() {
   requestArchiveElement('portlet', portletId);
 });
 
-// column 안에 있는 모든 카드 아카이브
+// 리스트 안에 있는 모든 카드 아카이브
 $(document).on('click', '.portlet-archive-all', function() {
   var column = $(this);
   var columnId = $($(column).parent()).parent().attr('id').split('_')[1];
