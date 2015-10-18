@@ -24,7 +24,9 @@ def create_portlet_result(success, id=None, title=None, content=None):
 @app.route('/', methods=['GET'])
 def index():
   columns = KanbanColumn.query.all()
-  return render_template('index.html', columns=columns)
+  archived_portlets = KanbanPortlet.query.filter_by(archived=True).all()
+  return render_template('index.html', columns=columns,
+                         archived_portlets=archived_portlets)
 
 
 @app.route('/create/column', methods=['POST'])
@@ -76,6 +78,8 @@ def edit_portlet(portlet_id):
     portlet.content = request.values['content']
   elif 'column_id' in request.values:
     portlet.column_id = request.values['column_id']
+  elif 'archived' in request.values:
+    portlet.archived = True
 
   try:
     db.session.commit()

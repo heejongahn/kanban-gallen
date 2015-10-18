@@ -22,14 +22,16 @@
             {{ column.title }}
           </div>
           {% for portlet in column.portlets %}
-          <div id="portlet_{{ portlet.id }}" class="portlet">
-            <div class="portlet-header">
-              {{ portlet.title }}
-            </div>
-            <div class="portlet-content">
-              {{ portlet.content }}
-            </div>
-          </div>
+            {% if not portlet.archived %}
+              <div id="portlet_{{ portlet.id }}" class="portlet">
+                <div class="portlet-header">
+                  {{ portlet.title }}
+                </div>
+                <div class="portlet-content">
+                  {{ portlet.content }}
+                </div>
+              </div>
+            {% endif %}
           {% endfor %}
         </div>
         {% endfor %}
@@ -39,6 +41,16 @@
     <div class="board-archive col-md-3">
       <!-- card archiving section -->
       <h4>Archive</h4>
+      {% for portlet in archived_portlets %}
+        <div id="portlet_{{ portlet.id }}" class="portlet">
+          <div class="portlet-header">
+            {{ portlet.title }}
+          </div>
+          <div class="portlet-content">
+            {{ portlet.content }}
+          </div>
+        </div>
+      {% endfor %}
     </div>
   </body>
 <script src="/static/js/jquery-1.11.3.min.js"></script>
@@ -241,5 +253,28 @@ $(document).on('click', '.portlet-content', function() {
   });
   content.show();
 });
+
+// 카드 아카이브
+$(document).on('click', '.portlet-archive', function() {
+  var portlet = $(this);
+  var portletId = $($(portlet).parent()).parent().attr('id').split('_')[1];
+
+  // app에 아카이브 하는 리퀘스트 보냄
+  $.ajax({
+    type: "PUT",
+    data: {
+      'archived': true,
+    },
+    url: "/edit/portlet/<portlet_id>/".replace("<portlet_id>", portletId),
+    success: function(response) {
+      var obj = jQuery.parseJSON(response);
+      if(obj.success) {
+      // 아카이빙에 성공하면 원래 있던 자리에서 지우고 오른쪽에 표시
+        $(".board-archive").append($($(portlet).parent()).parent());
+      }
+    }
+  });
+});
+
 </script>
 </html>
