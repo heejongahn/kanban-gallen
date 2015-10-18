@@ -5,27 +5,32 @@
     <title>Index</title>
     <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.css" type="text/css" media="all">
     <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap-theme.css" type="text/css" media="all">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/css/jquery-ui.css" type="text/css" media="all">
     <link rel="stylesheet" href="/static/css/index.css" type="text/css" media="all">
   </head>
   <body>
     <div class="board-active col-md-9">
       <!-- create new column -->
-      <button id="create_column" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button">
-        <span class="ui-button-text">Create Column</span>
+      <button id="create_column" class="btn btn-sm btn-info" type="button">
+        Create Column
       </button>
       <!-- column lists -->
       <div class="column-lists">
         {% for column in columns %}
-        <div id="column_{{ column.id }}" class="column">
-          <div class="column-header">
+        <div id="column_{{ column.id }}" class="column panel panel-info">
+          <div class="column-header panel-heading">
             {{ column.title }}
+            <i class="fa fa-plus portlet-create"></i>
+            <i class="fa fa-times column-toggle"></i>
           </div>
           {% for portlet in column.portlets %}
             {% if not portlet.archived %}
-              <div id="portlet_{{ portlet.id }}" class="portlet">
-                <div class="portlet-header">
+              <div id="portlet_{{ portlet.id }}" class="portlet panel panel-info">
+                <div class="portlet-header panel-heading">
                   {{ portlet.title }}
+                  <i class="fa fa-times portlet-toggle"></i>
+                  <i class="fa fa-archive portlet-archive"></i>
                 </div>
                 <div class="portlet-content">
                   {{ portlet.content }}
@@ -42,9 +47,11 @@
       <!-- card archiving section -->
       <h4>Archive</h4>
       {% for portlet in archived_portlets %}
-        <div id="portlet_{{ portlet.id }}" class="portlet">
-          <div class="portlet-header">
+        <div id="portlet_{{ portlet.id }}" class="portlet panel panel-info">
+          <div class="portlet-header panel-heading">
             {{ portlet.title }}
+            <i class="fa fa-times portlet-toggle"></i>
+            <i class="fa fa-archive portlet-archive"></i>
           </div>
           <div class="portlet-content">
             {{ portlet.content }}
@@ -116,24 +123,6 @@ function requestDeleteElement(type, element, elementId) {
 $(document).ready(function() {
   setSortable();
 
-  // add jquery-ui class
-  $(".column")
-    .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all");
-
-  $(".portlet")
-    .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all");
-
-  $(".column-header")
-    .addClass("ui-widget-header ui-corner-all")
-    .append("<span class='ui-icon ui-icon-plus portlet-create'></span>")
-    .append("<span class='ui-icon ui-icon-close column-toggle'></span>");
-
-  $(".portlet-header")
-    .addClass("ui-widget-header ui-corner-all")
-    .append("<span class='ui-icon ui-icon-close portlet-toggle'></span>")
-    .append("<span class='ui-icon ui-icon-folder-open portlet-archive'></span>");
-
-
   // create new column
   $("#create_column").on('click', function(e) {
     e.preventDefault();
@@ -146,11 +135,11 @@ $(document).ready(function() {
         if(obj.success) {
           newColumnId = obj.id;
           $(".column-lists").append(
-            "<div id='column_" + newColumnId + "' class='column ui-sortable ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'>" +
-            "<div class='column-header ui-widget-header ui-corner-all'>" +
+            "<div id='column_" + newColumnId + "' class='column panel panel-info'>" +
+            "<div class='column-header panel-heading'>" +
             "New Column" +
-            "<span class='ui-icon ui-icon-close column-toggle'></span>" +
-            "<span class='ui-icon ui-icon-plus portlet-create'></span>" +
+            "<i class='fa fa-plus portlet-create'></i>" +
+            "<i class='fa fa-times column-toggle'></i>" +
             "</div>" +
             "</div>");
           setSortable();
@@ -174,11 +163,11 @@ $(document).on('click', '.portlet-create', function(e) {
         newPortletId = obj.id;
 
         $(column[0].parentNode.parentNode).append(
-          "<div id='portlet_" + newPortletId + "' class='portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'>" +
-          "<div class='portlet-header ui-widget-header ui-corner-all'>" +
+          "<div id='portlet_" + newPortletId + "' class='portlet panel panel-info'>" +
+          "<div class='portlet-header panel-heading'>" +
           "New Portlet" +
-          "<span class='ui-icon ui-icon-close portlet-toggle'></span>" +
-          "<span class='ui-icon ui-icon-folder-open portlet-archive'></span>" +
+          "<i class='fa fa-times portlet-toggle'></i>" +
+          "<i class='fa fa-archive portlet-archive'></i>" +
           "</div>" +
           "<div class='portlet-content'>click to edit...</div></div>");
         setSortable();
@@ -213,8 +202,7 @@ $(document).on('click', '.portlet-header', function() {
   inputBox.blur(function() {
     if ($.trim(this.value) != '') {
       var newTitle = $(this).val();
-      title.html(newTitle + "<span class='ui-icon ui-icon-close portlet-toggle'></span>" +
-        "<span class='ui-icon ui-icon-folder-open portlet-archive'></span>");
+      title.html(newTitle + "<i class='fa fa-times portlet-toggle'></i><i class='fa fa-archive portlet-archive'></i>");
       $.ajax({
         type: "PUT",
         data: {
