@@ -169,13 +169,23 @@ $(document).on('click', '.portlet-toggle', function() {
 
 $(document).on('click', '.portlet-header', function() {
   var title = $(this);
+  var portletId = $(title.parent()).attr('id').split('_')[1];
+
   title.hide();
   var inputBox = $("<input name='edit' class='edit-title' type='text' />");
   title.after(inputBox);
   inputBox.focus();
   inputBox.blur(function() {
     if ($.trim(this.value) != '') {
-      title.html($(this).val() + "<span class='ui-icon ui-icon-close portlet-toggle'></span>");
+      var newTitle = $(this).val();
+      title.html(newTitle + "<span class='ui-icon ui-icon-close portlet-toggle'></span>");
+      $.ajax({
+        type: "PUT",
+        data: {
+          'title': newTitle,
+        },
+        url: "/edit/portlet/<portlet_id>/".replace("<portlet_id>", portletId)
+      });
     }
     $(this).remove();
   });

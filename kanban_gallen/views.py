@@ -4,7 +4,7 @@
 import httplib
 import json
 
-from flask import abort, render_template
+from flask import abort, render_template, request
 from sqlalchemy.exc import IntegrityError
 
 from kanban_gallen import app, db
@@ -59,6 +59,21 @@ def create_portlet(column_id):
   except IntegrityError:
     abort(httplib.BAD_REQUEST, 'BAD REQUEST')
     return create_portlet_result(False)
+  return create_portlet_result(True, portlet.id, portlet.title,
+                               portlet.content)
+
+
+@app.route('/edit/portlet/<portlet_id>', methods=['PUT'])
+@app.route('/edit/portlet/<portlet_id>/', methods=['PUT'])
+def edit_portlet(portlet_id):
+  portlet = KanbanPortlet.query.get(portlet_id)
+  print dir(request)
+  title = request.values['title']
+  portlet.title = title
+  try:
+    db.session.commit()
+  except IntegrityError:
+    abort(httplib.BAD_REQUEST, 'BAD REQUEST')
   return create_portlet_result(True, portlet.id, portlet.title,
                                portlet.content)
 
