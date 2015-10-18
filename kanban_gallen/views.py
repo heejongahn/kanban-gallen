@@ -29,6 +29,31 @@ def index():
                          archived_portlets=archived_portlets)
 
 
+@app.route('/archive/portlet/<element_id>', methods=['PUT'])
+@app.route('/archive/portlet/<element_id>/', methods=['PUT'])
+def archive_portlets(element_id):
+  element_type = request.values['type']
+  id_list = []
+  # portlet 하나를 아카이브 할 때
+  if element_type == "portlet":
+    portlet = KanbanPortlet.query.get(element_id)
+    portlet.archived = True
+    id_list.append(portlet.id)
+
+  # 한 column 내의 모든 portlet들을 아카이브 할 때
+  elif element_type == "column":
+    column = KanbanColumn.query.get(element_id)
+    portlets = column.portlets
+    for portlet in portlets:
+      portlet.archived = True
+      id_list.append(portlet.id)
+    try:
+      db.session.commit()
+    except IntegrityError:
+      abort(httplib.BAD_REQUEST, 'BAD REQUEST')
+    return json.dumps({'success': True, 'id_list': id_list})
+
+
 @app.route('/create/column', methods=['POST'])
 @app.route('/create/column/', methods=['POST'])
 def create_column():
