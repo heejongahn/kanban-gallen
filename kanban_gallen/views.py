@@ -52,10 +52,10 @@ def archive_portlets(element_id):
       if portlet is not None:
         portlet.archived = True
         id_list.append(portlet.id)
-    try:
-      db.session.commit()
-    except IntegrityError:
-      abort(httplib.BAD_REQUEST, 'BAD REQUEST')
+  try:
+    db.session.commit()
+  except IntegrityError:
+    abort(httplib.BAD_REQUEST, 'BAD REQUEST')
   return json.dumps({'success': True, 'id_list': id_list})
 
 
